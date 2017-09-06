@@ -107,4 +107,14 @@ void time_display(unsigned char hh, unsigned char hl, unsigned char lh, unsigned
     TM1637_cmdwrite(0x8a);
 }
 
+void n_display(unsigned int x)
+{
+    unsigned int i, d[4];
+    for(i = 0; i < 4; i++)
+    {
+        d[i] = x % 10;
+        x /= 10;
+    }
+    digit_display(d[3], d[2], d[1], d[0]);
+}
 

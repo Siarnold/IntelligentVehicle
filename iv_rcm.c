@@ -19,13 +19,19 @@ void rcm(void)
 
 void rcm_run(void)
 {
+    if(flag_TA2_0 == 1)
+    {
+        flag_TA2_0 = 0;
+        adc_start();
+    }
+
     switch(rc_sel)
     {
     case FWD: go_straight(V_STT); break; // forward
-    case BWD: go_backward(); break; // backward
-    case LWD: TA0CCR1 = LEF; break; // leftward
-    case RWD: TA0CCR1 = RIT; break; // rightward
-    case ACC: TA0CCR3 = V_ACC; break; // accelerate
+    case BWD: backward(); break; // backward
+    case LWD: turn(LEF); break; // leftward
+    case RWD: turn(RIT); break; // rightward
+    case ACC: acc(); break; // accelerate
     case VSH: vt_sel = V_SH; break; // velocity show
     case TSH: vt_sel = T_SH; break; // temperature show
     default: break;

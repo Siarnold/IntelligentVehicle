@@ -7,6 +7,7 @@
 
 #include <msp430f5529.h>
 #include "iv_basic.h"
+#include "iv_digit.h"
 #include "iv_ob_avoid.h"
 
 unsigned int num = 0;
@@ -19,6 +20,9 @@ void ob_avoid(void)
     P2OUT &= ~BIT2;
     P2DIR &= ~BIT0; // P2.0 IN
     P2SEL |= BIT0; // peripheral function: TA1CCR1
+
+    P3DIR |= BIT1;
+    P3OUT |= BIT1;
 
     // set TA1 for catching
     TA1CTL = TASSEL_2 + MC_2 + TACLR; // TASSEL_2=SMCLK, MC_2=连续计数模式, TACLR=清除TAR
@@ -38,7 +42,7 @@ void ob_avoid_ISR(void)
 __interrupt void TIMER1_A1_ISR(void)
 {
     unsigned int sum;
-    float dis = 2 * DIS_WARN;
+    float dis;
 
     switch(__even_in_range(TA1IV, 14))
     {
@@ -49,7 +53,7 @@ __interrupt void TIMER1_A1_ISR(void)
             num++;
             cycle[0] = TA1CCR1; // store the count result
             TA1CCTL1 = CM_2 + SCS + CAP + CCIE; // TA1CCR1 neg-edge catch
-            dis = 2 * DIS_WARN;
+            // dis = 2 * DIS_WARN;
         }
         else
         {
@@ -61,18 +65,25 @@ __interrupt void TIMER1_A1_ISR(void)
             dis = (1.0 / 480) * sum; // dis1tance unit: cm
             num = 0;
             TA1CCTL1 = CM_1 + SCS + CAP + CCIE;   //TA1CCR1上升沿捕获，同步捕获，捕获模式，中断使能
+
+            // n_display((unsigned int)dis); // display the distance
+
+            // avoidance strategy
+            if(dis < DIS_WARN)
+            {
+                P3OUT &= ~BIT1;
+                turn(RIT);
+                sel = TRAC; // set the priority of ob_avoid higher than tracking
+            }
+            else
+                P3OUT |= BIT1;
+            // if the distance is safe, the tracking model will take control
         }
         break;
     default: break;
     }
 
-    // avoidance strategy
-    if(dis < DIS_WARN)
-    {
-        turn(RIT, V_TUR);
-        sel = TRAC; // set the priority of ob_avoid higher than tracking
-    }
-    // if the distance is safe, the tracking model will take control
+
 }
 
 

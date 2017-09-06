@@ -10,6 +10,6 @@
 
 void bm(void);
 void bm_run(void);
-
+void bm_ISR(void);
 
 #endif /* IV_BM_H_ */

@@ -56,7 +56,7 @@ void set_clock(void)
 void set_intpt_TA2(void)
 {
     TA2CTL = TASSEL_1 + MC_1 + TACLR;
-    TA2CCR0 = 3200; // count sup
+    TA2CCR0 = 1600; // count sup
     TA2CCTL0 = CCIE;
 }
 

@@ -66,7 +66,7 @@ int main(void)
             else
                 rcm_run();
             break;
-        default: mode = CCM;
+        default: break;
         }
     }
 

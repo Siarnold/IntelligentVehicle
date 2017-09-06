@@ -24,8 +24,8 @@ void ccm(void)
 
 void ccm_run(void)
 {
-    if(mode != RCM)
-    {
+//    if(mode != RCM)
+//    {
         if(flag_TA2_0 == 1)
         {
 
@@ -39,7 +39,7 @@ void ccm_run(void)
             default: break;
             }
         }
-    }
-    else
-        adc_start();
+//    }
+//    else
+//        adc_start();
 }

@@ -16,20 +16,19 @@ void tracking(void)
 
 void tracking_ISR(void)
 {
+    unsigned char lb, rb; // left black, right black
     P1OUT ^= BIT0;
-    // turn left
-    if(P3IN & BIT5)
-    {
-        turn(LEF, V_TUR);
-    }
-    // turn right
-    else if(P3IN & BIT6)
-    {
-        turn(RIT, V_TUR);
-    }
+
+    lb = P3IN & BIT5;
+    rb = P3IN & BIT6;
+
+    if(lb && rb)
+        go_straight(0);
+    else if(lb)
+        go_turn(LEF, V_TUR);
+    else if(rb)
+        go_turn(RIT, V_TUR);
     else
-    {
         go_straight(V_STT);
-    }
 }
 

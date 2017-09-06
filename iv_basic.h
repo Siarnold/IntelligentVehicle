@@ -32,14 +32,14 @@
 #define T_SH 1
 
 // parameters about the steer and motor
-#define V_STT 40
-#define V_TUR 30
-#define V_ACC 60
-#define V_BWD 30
-#define LEF 75 // steering steer left
-#define RIT 65 // right
+#define V_STT 8
+#define V_TUR 8
+#define V_ACC 35
+#define V_BWD 20
+#define LEF 77 // steering steer left
+#define RIT 63 // right
 #define STT 69 // straight
-#define DIS_WARN 15
+#define DIS_WARN 25
 
 extern unsigned char mode /*= CCM*/;
 extern unsigned char flag_TA2_0 /*=0*/;
@@ -47,21 +47,33 @@ extern unsigned char sel /*=0*/;
 extern unsigned char rc_sel /*=FWD*/; // remote control select
 extern unsigned char vt_sel /*=V_SH*/; // velocity / temperature show select
 
-inline void go_straight(int ta0ccr3)
+inline void go_straight(int motor)
 {
-    TA0CCR3 = ta0ccr3; // motor
+    TA0CCR3 = motor; // motor
+    TA0CCR4 = 0;
     TA0CCR1 = STT; // straight
 }
 
-inline void turn(int ta0ccr1, int ta0ccr3)
+inline void go_turn(int steer, int motor)
 {
-    TA0CCR3 = ta0ccr3; // motor
-    TA0CCR1 = ta0ccr1;
+    TA0CCR3 = motor; // motor
+    TA0CCR1 = steer;
 }
 
-inline void go_backward()
+inline void turn(int steer)
 {
+    TA0CCR1 = steer;
+}
 
+inline void backward()
+{
+    TA0CCR1 = 0;
+    TA0CCR4 = V_BWD; // motor
+}
+
+inline void acc()
+{
+    TA0CCR3 = V_ACC;
 }
 
 inline set_buzzer()

@@ -27,8 +27,7 @@ __interrupt void  TIMERB1_ISR(void)
 {
     unsigned int current_counter;
     unsigned int dif_counter;
-    unsigned int frq, i;
-    unsigned int d[4];
+    unsigned int frq;
 
     current_counter = TBCCR2;
     if(current_counter > last_counter) dif_counter = current_counter - last_counter;
@@ -36,15 +35,8 @@ __interrupt void  TIMERB1_ISR(void)
     last_counter = current_counter;
     frq = 32768 / dif_counter;
 
-
-    for(i = 0; i < 4; i++)
-    {
-        d[i] = frq % 10;
-        frq /= 10;
-    }
-
-    if(vt_sel == V_SH && d[3] == 0)
-        digit_display(d[3], d[2], d[1], d[0]);
+    if(vt_sel == V_SH && frq < 1000)
+        n_display(frq);
 
 }
 
