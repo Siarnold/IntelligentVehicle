@@ -34,7 +34,6 @@
 
 // parameters about the steer and motor
 #define V_STT 25
-
 #define V_TUR 10
 #define V_ACC 35
 #define V_BWD 25
