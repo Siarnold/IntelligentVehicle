@@ -69,7 +69,7 @@ __interrupt void TIMER1_A1_ISR(void)
         else
         {
             cycle[1] = TA1CCR1; // store the count result
-            if(cycle[1] > cycle[0] && valid == 1)
+            if(valid)
                 sum = cycle[1] - cycle[0];
 
             dis = (1.0 / 480) * sum; // dis1tance unit: cm
@@ -83,7 +83,19 @@ __interrupt void TIMER1_A1_ISR(void)
             if(dis > 1 && dis < DIS_WARN)
             {
                 P3OUT &= ~BIT1;
-                go_straight(0);
+                // go_straight(0);
+
+                turn(RIT);
+                __delay_cycles(8000000);
+                turn(LEF);
+                __delay_cycles(16000000);
+
+                turn(RIT);
+                __delay_cycles(5000000);
+
+                turn(STT);
+                __delay_cycles(10000000);
+
                 sel = TRAC; // set the priority of ob_avoid higher than tracking
             }
             else

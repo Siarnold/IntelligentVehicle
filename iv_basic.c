@@ -11,7 +11,7 @@ unsigned char mode = CCM;
 unsigned char flag_TA2_0 = 0;
 unsigned char sel = 0;
 unsigned char rc_sel = FWD;
-unsigned char vt_sel = V_SH;
+unsigned char vt_sel = D_SH;
 
 void set_PWM(void)
 {

@@ -33,7 +33,7 @@
 #define D_SH 2
 
 // parameters about the steer and motor
-#define V_STT 15
+#define V_STT 25
 
 #define V_TUR 10
 #define V_ACC 35
@@ -41,7 +41,7 @@
 #define LEF 77 // steering steer left
 #define RIT 63 // right
 #define STT 69 // straight
-#define DIS_WARN 25
+#define DIS_WARN 50
 
 extern unsigned char mode /*= CCM*/;
 extern unsigned char flag_TA2_0 /*=0*/;

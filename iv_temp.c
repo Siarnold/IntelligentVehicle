@@ -33,30 +33,33 @@ __interrupt void ADC12_ISR(void)
     else
         tmp = 0;
 
-    if(vt_sel == T_SH)
-    {
-        if(tmp >= 0XFFF)
-        {
-            digit_display(0,0,3,0);
-            beep();
-        }
-        else
-        {
-            mute();
-            if(tmp >= 3574)
-                digit_display(0,0,4,0);
-            else if(tmp >= 2437)
-                digit_display(0,0,5,0);
-            else if(tmp >= 1874)
-                digit_display(0,0,6,0);
-            else if(tmp >= 1067)
-                digit_display(0,0,7,0);
-            else if(tmp > 0)
-                digit_display(0,0,8,0);
-            else
-                digit_display(0,0,0,0);
-        }
-    }
+    if (tmp < 4095 && tmp > 0)
+        n_display(tmp);
+
+//    if(vt_sel == T_SH)
+//    {
+//        if(tmp >= 0XFFF)
+//        {
+//            digit_display(0,0,3,0);
+//            beep();
+//        }
+//        else
+//        {
+//            mute();
+//            if(tmp >= 3574)
+//                digit_display(0,0,4,0);
+//            else if(tmp >= 2437)
+//                digit_display(0,0,5,0);
+//            else if(tmp >= 1874)
+//                digit_display(0,0,6,0);
+//            else if(tmp >= 1067)
+//                digit_display(0,0,7,0);
+//            else if(tmp > 0)
+//                digit_display(0,0,8,0);
+//            else
+//                digit_display(0,0,0,0);
+//        }
+//    }
 }
 
 
