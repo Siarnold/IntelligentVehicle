@@ -33,7 +33,7 @@ void rcm_run(void)
     case RWD: turn(RIT); break; // rightward
     case ACC: acc(); break; // accelerate
     case VSH: vt_sel = V_SH; break; // velocity show
-    case TSH: vt_sel = T_SH; break; // temperature show
+    case DSH: vt_sel = D_SH; break; // temperature show
     default: break;
     }
 }

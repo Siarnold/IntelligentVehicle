@@ -35,7 +35,7 @@ __interrupt void  TIMERB1_ISR(void)
     last_counter = current_counter;
     frq = 32768 / dif_counter;
 
-    if(vt_sel == V_SH && frq < 1000)
+    if((vt_sel == V_SH) && frq < 1000)
         n_display(frq);
 
 }

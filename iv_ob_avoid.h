@@ -25,6 +25,7 @@ inline void buzzer_update(unsigned int beep)
 }
 void ob_avoid(void);
 void ob_avoid_ISR(void);
+__interrupt void TIMER1_A0_ISR(void);
 __interrupt void TIMER1_A1_ISR(void);
 
 

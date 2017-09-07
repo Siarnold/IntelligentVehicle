@@ -20,6 +20,7 @@ void ccm(void)
     v_meas();
     temp();
     set_intpt_TA2();
+    vt_sel = D_SH; // set digit display to distance show
 }
 
 void ccm_run(void)

@@ -9,7 +9,8 @@
 #define IV_BM_H_
 
 void bm(void);
-void bm_run(void);
 void bm_ISR(void);
+void bm_run(void);
+__interrupt void TIMER2_A1_ISR(void);
 
 #endif /* IV_BM_H_ */

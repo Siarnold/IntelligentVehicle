@@ -66,7 +66,7 @@ __interrupt void USCI_A0_ISR(void)
             case RWD:
             case ACC:
             case VSH:
-            case TSH: rc_sel = str[2]; break;
+            case DSH: rc_sel = str[2]; break;
             case 0x07: mode = CCM; break;
             case 0x00: mode = BM; break;
             case 0x09: mode = RCM; break;

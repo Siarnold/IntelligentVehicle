@@ -12,6 +12,7 @@
 
 unsigned int num = 0;
 unsigned int cycle[2];
+unsigned char valid;
 
 void ob_avoid(void)
 {
@@ -28,6 +29,8 @@ void ob_avoid(void)
     TA1CTL = TASSEL_2 + MC_2 + TACLR; // TASSEL_2=SMCLK, MC_2=连续计数模式, TACLR=清除TAR
     TA1CCTL1 = CM_1 + SCS + CAP + CCIE; // TA1CCR1上升沿捕获，同步捕获，捕获模式，Interrupt Enable
     TA1CCTL2 = CM_1 + SCS + CAP + CCIE;
+
+
 }
 
 
@@ -36,6 +39,12 @@ void ob_avoid_ISR(void)
     P2OUT |= BIT2;
     __delay_cycles(160); // 15us
     P2OUT &= ~BIT2;
+}
+
+#pragma vector = TIMER1_A0_VECTOR
+__interrupt void TIMER1_A0_ISR(void)
+{
+    valid = 0;
 }
 
 #pragma vector = TIMER1_A1_VECTOR
@@ -52,32 +61,37 @@ __interrupt void TIMER1_A1_ISR(void)
         {
             num++;
             cycle[0] = TA1CCR1; // store the count result
+            valid = 1;
+            TA1CCTL0 = CCIE;
             TA1CCTL1 = CM_2 + SCS + CAP + CCIE; // TA1CCR1 neg-edge catch
             // dis = 2 * DIS_WARN;
         }
         else
         {
             cycle[1] = TA1CCR1; // store the count result
-            if(cycle[1] > cycle[0])
+            if(cycle[1] > cycle[0] && valid == 1)
                 sum = cycle[1] - cycle[0];
-            else
-                sum = 65536 + cycle[1] - cycle[0];
+
             dis = (1.0 / 480) * sum; // dis1tance unit: cm
             num = 0;
             TA1CCTL1 = CM_1 + SCS + CAP + CCIE;   //TA1CCR1上升沿捕获，同步捕获，捕获模式，中断使能
 
-            // n_display((unsigned int)dis); // display the distance
+            if(vt_sel == D_SH)
+                n_display((unsigned int)dis); // display the distance
 
             // avoidance strategy
-            if(dis < DIS_WARN)
+            if(dis > 1 && dis < DIS_WARN)
             {
                 P3OUT &= ~BIT1;
-                turn(RIT);
+                go_straight(0);
                 sel = TRAC; // set the priority of ob_avoid higher than tracking
             }
             else
+            {
                 P3OUT |= BIT1;
-            // if the distance is safe, the tracking model will take control
+                // if the distance is safe, the tracking model will take control
+            }
+
         }
         break;
     default: break;
